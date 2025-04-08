@@ -66,12 +66,42 @@ String t(String key) {
   return translations[currentLanguage]?[key] ?? '[missing "$key"]';
 }
 
+// Future<String> translateFact(String text, String targetLang) async {
+//   final Uri url = Uri.parse('https://libretranslate.com/translate');
+
+//   final response = await http.post(
+//     url,
+//     headers: {
+//       'Content-Type': 'application/json',
+//     },
+//     body: jsonEncode({
+//       'q': text,
+//       'source': 'en',
+//       'target': targetLang,
+//       'format': 'text',
+//     }),
+//   );
+
+//   print('Response Status: ${response.statusCode}');
+//   print('Response Body: ${response.body}'); // Выводим тело ответа
+
+//   if (response.statusCode == 200) {
+//     final data = jsonDecode(response.body);
+//     return data['translatedText'];
+//   } else {
+//     return 'Failed to translate fact. HTTP Error: ${response.statusCode}';
+//   }
+// }
+
 Future<String> fetchCatFact() async {
   final response = await http.get(Uri.parse('https://catfact.ninja/fact'));
 
   if (response.statusCode == 200) {
     final data = jsonDecode(response.body);
-    return data['fact'];
+    String fact = data['fact'];
+    // String translatedFact = await translateFact(fact, currentLanguage);
+    // return translatedFact;
+    return fact;
   } else {
     return 'Failed to load cat fact.';
   }
